@@ -22,7 +22,7 @@ class ParseGTF():
 		df = read_gtf(gtf)
 		exons_df = df.loc[df["feature"] == "exon",:]
 		exons_df = exons_df.reset_index(drop = True)
-		exons_df["exon_id"] = exons_df.loc["gene_id"] + exons_df.loc["strand"]
+		exons_df["exon_id"] = exons_df["gene_id"] + exons_df["strand"]
 		for i in range(exons_df.shape[0]):
 			exons_df.loc[i, "exon_id"] = exons_df.loc[i, "gene_id"]
 			exn = exons_df.loc[i, "exon_id"]
