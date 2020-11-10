@@ -197,5 +197,7 @@ rule generateCountMatrix:
 		"output/CountMatrix_{reads}_{transcripts}_{graph}.txt"
 	benchmark:
 		"benchmark/generateCount_{reads}_{transcripts}_{graph}.txt"
+	conda:
+		"envs/gtf_env.yaml"
 	shell:
 		"python {SCRIPTPATH}/ThreePrime.py -g {input.gtffile} -m {input.matrix} -j {input.jsonfile} >> {output}"

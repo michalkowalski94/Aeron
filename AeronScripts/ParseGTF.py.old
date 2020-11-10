@@ -5,7 +5,6 @@ import os
 import sys
 import re
 from collections import defaultdict
-from gtfparse import read_gtf
 
 es  = defaultdict(list) #retrieve exon start give an exon id
 ee  = defaultdict(list) #retrieve exon end given an exon id
@@ -16,27 +15,27 @@ est = defaultdict(list) #retrieve strand Information for an exon id
 en  = defaultdict(list) #retrieve exon number for an exon id
 et  = defaultdict(list)
 
-
 class ParseGTF():
 	def __init__(self, gtf):
-		df = read_gtf(gtf)
-		exons_df = df.loc[df["feature"] == "exon",:]
-		exons_df = exons_df.reset_index(drop = True)
-		exons_df["exon_id"] = exons_df.loc[i, "gene_id"] + exons_df.loc[i, "strand"]
-		for i in range(exons_df.shape[0]):
-			exons_df.loc[i, "exon_id"] = exons_df.loc[i, "gene_id"]
-			exn = exons_df.loc[i, "exon_id"]
-			gn = exons_df.loc[i, "gene_id"]
-			tr = exons_df.loc[i, "transcript_id"]
-			enu = exons_df.loc[i, "exon_number"]
-			es[exn[0]].append(exons_df.loc[i, "start"])
-			ee[exn[0]].append(exons_df.loc[i, "end"])
-			ec[exn[0]].append(exons_df.loc[i, "seqname"])
-			est[exn[0]].append(exons_df.loc[i, "strand"])
-			et[exn[0]].append(tr)
-			eg[gn[0]].append(gn)
-			en[exn[0]].append(enu)
-
+		f=open(gtf)
+		line = f.readline()
+		while line:
+			if not (re.match(r'#', line)):
+				exn=re.findall(r'exon_id "(.*?)";',line)
+				if(len(exn)>=1):	
+					es[exn[0]].append(line.split()[3])
+					ee[exn[0]].append(line.split()[4])
+					ec[exn[0]].append(line.split()[0])
+					est[exn[0]].append(line.split()[6])		
+					tr=re.findall(r'transcript_id "(.*?)";',line)
+					gn = re.findall(r'gene_id "(.*?)";',line)
+					enu = re.findall(r'exon_number "(.*?)";',line)
+					et[exn[0]].append(tr[0])
+					eg[gn[0]].append(exn[0])
+					eg[tr[0]].append(exn[0])
+					en[exn[0]].append(enu[0])
+			line=f.readline()
+		
 	def getExons(self, key):
 		return eg[key]
 	
