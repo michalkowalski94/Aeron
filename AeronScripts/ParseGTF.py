@@ -67,7 +67,7 @@ class ParseGTF():
 				i=i+1
 		return genes
 
-        def getTranscriptPosition(self, key):
+	def getTranscriptPosition(self, key):
 		allexons = eg[key]
 		startpoint=0
 		endpoint=0
