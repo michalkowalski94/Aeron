@@ -6,6 +6,7 @@ import sys
 import re
 from collections import defaultdict
 from gtfparse import read_gtf
+from tqdm import trange
 
 es  = defaultdict(list) #retrieve exon start give an exon id
 ee  = defaultdict(list) #retrieve exon end given an exon id
@@ -23,19 +24,18 @@ class ParseGTF():
 		exons_df = df.loc[df["feature"] == "exon",:]
 		exons_df = exons_df.reset_index(drop = True)
 		exons_df["exon_id"] = exons_df["gene_id"] + exons_df["strand"]
-		for i in range(exons_df.shape[0]):
-			exons_df.loc[i, "exon_id"] = exons_df.loc[i, "gene_id"]
+		for i in trange(exons_df.shape[0]):
 			exn = exons_df.loc[i, "exon_id"]
 			gn = exons_df.loc[i, "gene_id"]
 			tr = exons_df.loc[i, "transcript_id"]
 			enu = exons_df.loc[i, "exon_number"]
-			es[exn[0]].append(exons_df.loc[i, "start"])
-			ee[exn[0]].append(exons_df.loc[i, "end"])
-			ec[exn[0]].append(exons_df.loc[i, "seqname"])
-			est[exn[0]].append(exons_df.loc[i, "strand"])
-			et[exn[0]].append(tr)
-			eg[gn[0]].append(gn)
-			en[exn[0]].append(enu)
+			es[exn].append(exons_df.loc[i, "start"])
+			ee[exn].append(exons_df.loc[i, "end"])
+			ec[exn].append(exons_df.loc[i, "seqname"])
+			est[exn].append(exons_df.loc[i, "strand"])
+			et[exn].append(tr)
+			eg[gn].append(gn)
+			en[exn].append(enu)
 
 	def getExons(self, key):
 		return eg[key]
