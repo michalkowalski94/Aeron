@@ -34,13 +34,15 @@ class ParseGTF():
 			ec[exn].append(exons_df.loc[i, "seqname"])
 			est[exn].append(exons_df.loc[i, "strand"])
 			et[exn].append(tr)
-			eg[gn].append(gn)
+			eg[gn].append(exn)
+			eg[tr].append(exn)
 			en[exn].append(enu)
 
 	def getExons(self, key):
 		return eg[key]
 	
 	def getStart(self, key):
+		print(es[key])
 		return int(es[key][0])
 
 	def getEnd(self, key):

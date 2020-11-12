@@ -9,6 +9,7 @@ import optparse
 from optparse import OptionParser
 from optparse import Option, OptionValueError
 from ParseGTF import *
+from tqdm import tqdm
         
 class ParseOptions():
 	def getoptions(self):
@@ -186,14 +187,21 @@ print("Done reading gtf")
 print("Collecting all the genes")
 transcripts = pg.getAllGenes()
 print("Building graph for:")
-
-for transcript in transcripts:
+count = 0
+for transcript in tqdm(transcripts):
 	ex = pg.getExons(transcript)
 	start,end, chromosome = gb.SortExons(pg, ex)
 	cluster, cchromosome = gb.DefineCluster(start, end, chromosome)
-	ndst,nden,chrnod = gb.getNodePositions(cluster, cchromosome)	
+	# print(f"!!!{transcript}!!!\n{cluster}\n{cchromosome}\n--------------------------------------\n")
+	ndst,nden,chrnod = gb.getNodePositions(cluster, cchromosome)
+	# print(f"{ndst}\n{nden}\n{chrnod}\n--------------------------------------\n")	
 	nodeid=gb.getNodeID(pg, ndst, nden, ex)
+	# print(f"{nodeid}\n--------------------------------------\n")
 	nodes, connections = gb.getNodeConnections(nodeid, ndst, nden, chrnod, fasta, nodes, connections)
+	# print(f"{nodes}\n{connections}\n--------------------------------------\n")
+	if count >= 5:
+		break
+	count += 1
 
 for i in nodes:
 	f.write(i+"\n")
