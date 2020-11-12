@@ -64,9 +64,8 @@ class ParseGTF():
 		i=0
 		genes = []
 		for key in eg.keys():
-			if not (key.find("ENSG")):
-				genes.append(key)
-				i=i+1
+			genes.append(key)
+			i=i+1
 		return genes
 
 	def getTranscriptPosition(self, key):
@@ -86,9 +85,8 @@ class ParseGTF():
 		i=0
 		transcripts = []
 		for key in eg.keys():
-			if not (key.find("ENST")):
-				transcripts.append(key)
-				i=i+1
+			transcripts.append(key)
+			i=i+1
 		return transcripts
 
 

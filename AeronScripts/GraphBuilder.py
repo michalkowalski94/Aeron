@@ -186,9 +186,11 @@ print("Done reading gtf")
 
 print("Collecting all the genes")
 transcripts = pg.getAllGenes()
+# print(transcripts)
 print("Building graph for:")
-count = 0
+# count = 0
 for transcript in tqdm(transcripts):
+	# print(transcript)
 	ex = pg.getExons(transcript)
 	start,end, chromosome = gb.SortExons(pg, ex)
 	cluster, cchromosome = gb.DefineCluster(start, end, chromosome)
@@ -199,9 +201,6 @@ for transcript in tqdm(transcripts):
 	# print(f"{nodeid}\n--------------------------------------\n")
 	nodes, connections = gb.getNodeConnections(nodeid, ndst, nden, chrnod, fasta, nodes, connections)
 	# print(f"{nodes}\n{connections}\n--------------------------------------\n")
-	if count >= 5:
-		break
-	count += 1
 
 for i in nodes:
 	f.write(i+"\n")
