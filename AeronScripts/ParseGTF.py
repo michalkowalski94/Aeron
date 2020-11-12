@@ -42,7 +42,6 @@ class ParseGTF():
 		return eg[key]
 	
 	def getStart(self, key):
-		print(es[key])
 		return int(es[key][0])
 
 	def getEnd(self, key):
